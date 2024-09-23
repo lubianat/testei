@@ -1,0 +1,21 @@
+/* Resizable PDF container */
+#pdf-viewer-container {
+    overflow: hidden;
+}
+
+.tighter-form .question {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+/* Adjust the input and label to be tighter */
+.tighter-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* Style the labels to be tighter */
+.tighter-form label {
+    margin-right: 10px;
+    margin-left: 5px;
+}
