@@ -170,7 +170,7 @@ function downloadScore() {
     const data = Object.keys(window.correctAnswers).map((questionKey, index) => {
         const userAnswer = userAnswers[questionKey] || "Não respondida";
         const correctAnswer = window.correctAnswers[questionKey];
-        const status = userAnswer === correctAnswer ? "ok" : "";
+        const status = userAnswer === correctAnswer ? "ok" : "X";
         return [`Questão ${index + 1}`, userAnswer, correctAnswer, status];
     });
 
