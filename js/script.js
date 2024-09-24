@@ -1,33 +1,34 @@
 let timerInterval;
-let timerVisible = true;
-let isPaused = false;
 let totalSeconds = 0;
+let isPaused = true;
+let isTimerBarVisible = false; // Track timer bar visibility
+
+// Função para iniciar/pausar o Timer
+function togglePlayPause() {
+    const playPauseIcon = document.getElementById("play-pause-icon");
+    if (isPaused) {
+        startTimer();
+        playPauseIcon.classList.remove("fa-play");
+        playPauseIcon.classList.add("fa-pause");
+    } else {
+        pauseTimer();
+        playPauseIcon.classList.remove("fa-pause");
+        playPauseIcon.classList.add("fa-play");
+    }
+}
 
 // Função para iniciar o Timer
 function startTimer() {
-    const timerElement = document.getElementById('timer');
-
-    if (isPaused) {
-        isPaused = false;
-        return;
-    }
-
-    timerElement.style.display = 'block'; // Certifique-se de que o timer está visível
-    clearInterval(timerInterval);
-
+    isPaused = false;
     timerInterval = setInterval(() => {
-        if (!isPaused) {
-            totalSeconds++;
-            const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-            const mins = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-            const secs = (totalSeconds % 60).toString().padStart(2, '0');
-            timerElement.innerHTML = `${hrs}:${mins}:${secs}`;
-        }
+        totalSeconds++;
+        document.getElementById("timer-display").textContent = formatTime(totalSeconds);
     }, 1000);
 }
 
 // Função para pausar o Timer
 function pauseTimer() {
+    clearInterval(timerInterval);
     isPaused = true;
 }
 
@@ -35,21 +36,42 @@ function pauseTimer() {
 function resetTimer() {
     clearInterval(timerInterval);
     totalSeconds = 0;
-    isPaused = false;
-    document.getElementById('timer').innerHTML = '00:00:00';
+    document.getElementById("timer-display").textContent = "00:00:00";
+    isPaused = true;
+    const playPauseIcon = document.getElementById("play-pause-icon");
+    playPauseIcon.classList.remove("fa-pause");
+    playPauseIcon.classList.add("fa-play");
 }
 
-// Alternar a visibilidade do Timer
-function toggleTimer() {
-    const timerElement = document.getElementById('timer');
-    if (timerVisible) {
-        timerElement.style.display = 'none';
-        document.getElementById('toggle-timer').innerText = 'Mostrar Timer';
+// Formatar tempo no estilo hh:mm:ss
+function formatTime(seconds) {
+    const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
+}
+
+// Função para alternar a visibilidade da barra de timer
+function toggleTimerBar() {
+    const timerBar = document.getElementById("timer-bar");
+    isTimerBarVisible = !isTimerBarVisible;
+    timerBar.style.display = isTimerBarVisible ? "flex" : "none";
+}
+
+
+// Função para confirmar a troca da prova apenas se houver respostas
+function confirmLoadTest() {
+    const form = document.getElementById('questions-form');
+    const answeredQuestions = Object.values(form).some(input => input.checked);
+
+    if (answeredQuestions) {
+        const confirmChange = confirm('Tem certeza que deseja carregar essa prova? Suas respostas atuais serão descartadas.');
+        if (confirmChange) {
+            loadTest();
+        }
     } else {
-        timerElement.style.display = 'block';
-        document.getElementById('toggle-timer').innerText = 'Ocultar Timer';
+        loadTest(); // Carrega a prova imediatamente se nenhuma resposta foi dada
     }
-    timerVisible = !timerVisible;
 }
 
 // Função para carregar o teste selecionado
@@ -74,6 +96,7 @@ function loadTest() {
 function generateScoreCard(answers) {
     const form = document.getElementById('questions-form');
     form.innerHTML = ''; // Limpar quaisquer questões existentes
+    userAnswers = {}; // Reset user answers for new test
 
     // Percorrer as chaves do JSON para criar as questões dinamicamente
     Object.keys(answers).forEach((questionKey, index) => {
@@ -118,18 +141,57 @@ function calculateScore() {
     // Percorrer as respostas armazenadas e comparar com as entradas do usuário
     Object.keys(window.correctAnswers).forEach((questionKey) => {
         const selectedAnswer = form[questionKey].value;
+        userAnswers[questionKey] = selectedAnswer; // Armazena a resposta do usuário
         const resultSpan = document.getElementById(`result-${questionKey}`); // Pega o span de resultado
 
+        // Verifica se está correto ou não e exibe a resposta certa
         if (selectedAnswer === window.correctAnswers[questionKey]) {
             score++;
-            resultSpan.innerHTML = ' ✅'; // Mostra o "ok" verde
-            resultSpan.style.color = 'green';
+            resultSpan.innerHTML = ` ✅ (<span style="color: green">${window.correctAnswers[questionKey]}</span>)`;
         } else {
-            resultSpan.innerHTML = ' ❌'; // Mostra o "errado" vermelho
-            resultSpan.style.color = 'red';
+            resultSpan.innerHTML = ` ❌ (<span style="color: red">${window.correctAnswers[questionKey]}</span>)`;
         }
     });
 
     const scoreOutput = document.getElementById('score-output');
     scoreOutput.innerHTML = `Seu resultado foi ${score}/${Object.keys(window.correctAnswers).length}`;
 }
+
+// Função para baixar o resultado em formato PDF usando jsPDF
+// Função para baixar o resultado em formato PDF usando jsPDF com AutoTable
+function downloadScore() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Define the table headers
+    const headers = [['Questão', 'Sua Resposta', 'Resposta Correta', 'Status']];
+
+    // Populate the table rows with user answers and correct answers
+    const data = Object.keys(window.correctAnswers).map((questionKey, index) => {
+        const userAnswer = userAnswers[questionKey] || "Não respondida";
+        const correctAnswer = window.correctAnswers[questionKey];
+        const status = userAnswer === correctAnswer ? "ok" : "";
+        return [`Questão ${index + 1}`, userAnswer, correctAnswer, status];
+    });
+
+    // Generate the AutoTable with the data
+    doc.autoTable({
+        head: headers,
+        body: data,
+        startY: 10, // Starting point for the table
+        theme: 'grid', // You can use 'striped', 'grid', or 'plain'
+        styles: {
+            fontSize: 10,
+        },
+        headStyles: {
+            fillColor: [41, 128, 185], // Blue header
+        },
+        bodyStyles: {
+            halign: 'center', // Center align the text
+        },
+    });
+
+    // Download the PDF
+    doc.save('resultado_teste.pdf');
+}
+
