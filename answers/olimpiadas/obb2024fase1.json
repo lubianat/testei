@@ -1,0 +1,41 @@
+{
+    "metadata": {
+        "source_for_test": "https://olimpiadasdebiologia.butantan.gov.br/assets/OBB_documento_fonte%2012.pdf",
+        "source_for_score": "https://olimpiadasdebiologia.butantan.gov.br/assets/documentos/2024/gabarito-definitivo-fase-1a_corrigido.pdf"
+    },
+    "answers": {
+        "1": "A",
+        "2": "B",
+        "3": "A",
+        "4": "A",
+        "5": "D",
+        "6": "E",
+        "7": "B",
+        "8": "C",
+        "9": "D",
+        "10": "D",
+        "11": "B",
+        "12": "E",
+        "13": "C",
+        "14": "A",
+        "15": "D",
+        "16": "B",
+        "17": "D",
+        "18": "A",
+        "19": "B",
+        "20": "C",
+        "21": "A",
+        "22": "C",
+        "23": "C",
+        "24": "A",
+        "25": "E",
+        "26": "C",
+        "27": [
+            "B",
+            "C"
+        ],
+        "28": "C",
+        "29": "E",
+        "30": "A"
+    }
+}

@@ -164,6 +164,7 @@ function generateScoreCard(answers) {
 function calculateScore() {
     const form = document.getElementById('questions-form');
     let score = 0;
+    console.log(window.correctAnswers);
 
     // Iterate over the correct answers and compare them with user's selections
     Object.keys(window.correctAnswers).forEach((questionKey) => {
@@ -173,19 +174,51 @@ function calculateScore() {
 
         userAnswers[questionKey] = selectedAnswer; // Store user's answer
         const resultSpan = document.getElementById(`result-${questionKey}`); // Get the result span
+        console.log(window.correctAnswers[questionKey]);
+        // Determine the correct answer format (string, array, or object)
+        const correctAnswer = Array.isArray(window.correctAnswers[questionKey])
+            ? window.correctAnswers[questionKey]  // If it's an array, just use it as is
+            : typeof window.correctAnswers[questionKey] === 'object'
+                ? window.correctAnswers[questionKey].answer  // For ordered format (object with 'answer' property)
+                : window.correctAnswers[questionKey];        // For barebones format (string)
 
-        // Determine the correct answer format (string or object)
-        const correctAnswer = typeof window.correctAnswers[questionKey] === 'object'
-            ? window.correctAnswers[questionKey].answer  // For ordered format (object)
-            : window.correctAnswers[questionKey];        // For barebones format (string)
+        console.log(correctAnswer);
 
-        // Check if the answer is correct and display the result
-        if (selectedAnswer === correctAnswer) {
-            score++;
-            resultSpan.innerHTML = ` ✅ (<span style="color: green">${correctAnswer}</span>)`;
+        // Initialize variables to hold the display color and correct answer text
+        let isCorrect = false;
+        let correctAnswerText;
+        // Check if the correct answer is an array (multiple correct answers)
+        if (Array.isArray(correctAnswer)) {
+            // Multiple correct answers: Check if the user's answer is included in the array
+            isCorrect = correctAnswer.includes(selectedAnswer);
+
+            // Prepare the correct answers display (green if correct, red if incorrect)
+            correctAnswerText = correctAnswer
+                .map(answer => selectedAnswer === answer
+                    ? `<span style="color: green">${answer}</span>`
+                    : `<span style="color: red">${answer}</span>`)
+                .join(', '); // Join answers with a comma for display
         } else {
-            resultSpan.innerHTML = ` ❌ (<span style="color: red">${correctAnswer}</span>)`;
+            // Single correct answer: Check if it matches
+            isCorrect = selectedAnswer === correctAnswer;
+
+            // Prepare the correct answer display
+            correctAnswerText = isCorrect
+                ? `<span style="color: green">${correctAnswer}</span>` // Display in green if correct
+                : `<span style="color: red">${correctAnswer}</span>`;   // Display in red if incorrect
         }
+
+        // Update the score if the answer is correct
+        if (isCorrect) {
+            score++;
+        }
+
+        // Display the result in the result span
+        resultSpan.innerHTML = selectedAnswer
+            ? isCorrect
+                ? ` ✅ (${correctAnswerText})`
+                : ` ❌ (${correctAnswerText})`
+            : ` ❌ (${correctAnswerText})`; // Handles the case where the answer is null
     });
 
     const scoreOutput = document.getElementById('score-output');
@@ -201,14 +234,17 @@ function downloadScore() {
     // Define the table headers
     const headers = [['Questão', 'Sua Resposta', 'Resposta Correta', 'Status']];
 
-    // Get sorted entries from answers
-    const sortedEntries = getSortedEntries(window.correctAnswers);
-
     // Populate the table rows with user answers and correct answers
-    const data = sortedEntries.map(([questionKey, data]) => {
-        const correctAnswer = typeof data === 'object' ? data.answer : data; // Get the correct answer
+    const data = Object.keys(window.correctAnswers).map((questionKey) => {
+        const correctAnswer = Array.isArray(window.correctAnswers[questionKey])
+            ? window.correctAnswers[questionKey].join(', ') // Join multiple answers with a comma
+            : window.correctAnswers[questionKey];           // Single correct answer as string
+
         const userAnswer = userAnswers[questionKey] || "Não respondida"; // Handle unanswered questions
-        const status = userAnswer === correctAnswer ? "ok" : "X";
+        const status = Array.isArray(window.correctAnswers[questionKey])
+            ? window.correctAnswers[questionKey].includes(userAnswer) ? "ok" : "X" // Check for multiple correct answers
+            : userAnswer === correctAnswer ? "ok" : "X"; // Standard check for single answer
+
         return [`Questão ${questionKey}`, userAnswer, correctAnswer, status];
     });
 
@@ -232,6 +268,7 @@ function downloadScore() {
     // Download the PDF
     doc.save('resultado_teste.pdf');
 }
+
 
 
 
