@@ -78,7 +78,7 @@ function confirmLoadTest() {
 function loadTest() {
     const testSelect = document.getElementById('test').value;
     const pdfFrame = document.getElementById('pdf-frame');
-    const answerKey = `answers/${testSelect}_answers.json`;
+    const answerKey = `answers/${testSelect}.json`;
 
     if (testSelect) {
         pdfFrame.src = `pdfs/${testSelect}.pdf`;
