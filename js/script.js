@@ -91,26 +91,51 @@ function loadTest() {
             });
     }
 }
+// Helper function to get sorted entries from the answers object
+function getSortedEntries(answers) {
+    // Detect if the answers have an 'order' field
+    const isOrdered = typeof Object.values(answers)[0] === 'object' && 'order' in Object.values(answers)[0];
+
+    let sortedEntries;
+
+    if (isOrdered) {
+        // Sort based on the 'order' field
+        sortedEntries = Object.entries(answers).sort((a, b) => a[1].order - b[1].order);
+    } else {
+        // No 'order' field; sort based on the keys (numerical part)
+        sortedEntries = Object.entries(answers).sort((a, b) => {
+            const [numA] = a[0].split('-');
+            const [numB] = b[0].split('-');
+            return parseInt(numA) - parseInt(numB);
+        });
+    }
+
+    return sortedEntries;
+}
+
 
 // Função para gerar dinamicamente o cartão de respostas baseado no número de perguntas
 function generateScoreCard(answers) {
     const form = document.getElementById('questions-form');
-    form.innerHTML = ''; // Limpar quaisquer questões existentes
-    userAnswers = {}; // Reset user answers for new test
+    form.innerHTML = ''; // Clear any existing questions
+    userAnswers = {}; // Reset user answers for the new test
 
-    // Percorrer as chaves do JSON para criar as questões dinamicamente
-    Object.keys(answers).forEach((questionKey, index) => {
-        const questionNumber = index + 1;
+    // Get sorted entries from answers
+    const sortedEntries = getSortedEntries(answers);
+
+    // Iterate over sorted entries and generate the scorecard
+    sortedEntries.forEach(([questionKey, data]) => {
+        const answer = typeof data === 'object' ? data.answer : data; // Get the answer (either a string or from the object)
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
 
-        // Criar o rótulo da pergunta
+        // Create the label for the question
         const questionLabel = document.createElement('label');
-        questionLabel.innerText = `Questão ${questionNumber}.`;
+        questionLabel.innerText = `Questão ${questionKey}.`;
         questionDiv.appendChild(questionLabel);
         questionDiv.appendChild(document.createElement('br'));
 
-        // Criar os botões de rádio para opções de A a E
+        // Create radio buttons for options A to E
         ['A', 'B', 'C', 'D', 'E'].forEach(option => {
             const radio = document.createElement('input');
             radio.type = 'radio';
@@ -124,38 +149,49 @@ function generateScoreCard(answers) {
             questionDiv.appendChild(label);
         });
 
-        // Adicionar um span para mostrar o resultado (certo/errado)
+        // Add a span to show correct/incorrect result
         const resultSpan = document.createElement('span');
-        resultSpan.id = `result-${questionKey}`; // ID exclusivo para cada resultado
+        resultSpan.id = `result-${questionKey}`; // Unique ID for each result
         questionDiv.appendChild(resultSpan);
 
         form.appendChild(questionDiv);
     });
 }
 
+
+
 // Função para calcular a pontuação com base nas respostas selecionadas
 function calculateScore() {
     const form = document.getElementById('questions-form');
     let score = 0;
 
-    // Percorrer as respostas armazenadas e comparar com as entradas do usuário
+    // Iterate over the correct answers and compare them with user's selections
     Object.keys(window.correctAnswers).forEach((questionKey) => {
-        const selectedAnswer = form[questionKey].value;
-        userAnswers[questionKey] = selectedAnswer; // Armazena a resposta do usuário
-        const resultSpan = document.getElementById(`result-${questionKey}`); // Pega o span de resultado
+        // Use querySelector to get the selected radio input based on the question's name
+        const selectedRadio = form.querySelector(`input[name="${CSS.escape(questionKey)}"]:checked`);
+        const selectedAnswer = selectedRadio ? selectedRadio.value : null; // Get the selected value or null if none
 
-        // Verifica se está correto ou não e exibe a resposta certa
-        if (selectedAnswer === window.correctAnswers[questionKey]) {
+        userAnswers[questionKey] = selectedAnswer; // Store user's answer
+        const resultSpan = document.getElementById(`result-${questionKey}`); // Get the result span
+
+        // Determine the correct answer format (string or object)
+        const correctAnswer = typeof window.correctAnswers[questionKey] === 'object'
+            ? window.correctAnswers[questionKey].answer  // For ordered format (object)
+            : window.correctAnswers[questionKey];        // For barebones format (string)
+
+        // Check if the answer is correct and display the result
+        if (selectedAnswer === correctAnswer) {
             score++;
-            resultSpan.innerHTML = ` ✅ (<span style="color: green">${window.correctAnswers[questionKey]}</span>)`;
+            resultSpan.innerHTML = ` ✅ (<span style="color: green">${correctAnswer}</span>)`;
         } else {
-            resultSpan.innerHTML = ` ❌ (<span style="color: red">${window.correctAnswers[questionKey]}</span>)`;
+            resultSpan.innerHTML = ` ❌ (<span style="color: red">${correctAnswer}</span>)`;
         }
     });
 
     const scoreOutput = document.getElementById('score-output');
     scoreOutput.innerHTML = `Seu resultado foi ${score}/${Object.keys(window.correctAnswers).length}`;
 }
+
 
 // Função para baixar o resultado em formato PDF usando jsPDF com AutoTable
 function downloadScore() {
@@ -165,12 +201,15 @@ function downloadScore() {
     // Define the table headers
     const headers = [['Questão', 'Sua Resposta', 'Resposta Correta', 'Status']];
 
+    // Get sorted entries from answers
+    const sortedEntries = getSortedEntries(window.correctAnswers);
+
     // Populate the table rows with user answers and correct answers
-    const data = Object.keys(window.correctAnswers).map((questionKey, index) => {
-        const userAnswer = userAnswers[questionKey] || "Não respondida";
-        const correctAnswer = window.correctAnswers[questionKey];
+    const data = sortedEntries.map(([questionKey, data]) => {
+        const correctAnswer = typeof data === 'object' ? data.answer : data; // Get the correct answer
+        const userAnswer = userAnswers[questionKey] || "Não respondida"; // Handle unanswered questions
         const status = userAnswer === correctAnswer ? "ok" : "X";
-        return [`Questão ${index + 1}`, userAnswer, correctAnswer, status];
+        return [`Questão ${questionKey}`, userAnswer, correctAnswer, status];
     });
 
     // Generate the AutoTable with the data
@@ -193,6 +232,8 @@ function downloadScore() {
     // Download the PDF
     doc.save('resultado_teste.pdf');
 }
+
+
 
 let isFormDirty = false; // Track if the form has been modified
 

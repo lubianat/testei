@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUVEST Taker</title>
+    <title>Simulados BR</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -61,7 +61,7 @@
     <!-- Navbar com controles de Timer -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">FUVEST Taker</a>
+            <a class="navbar-brand" href="#">Simulados BR</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -87,11 +87,13 @@
     <div class="container-fluid mt-4">
         <div class="row my-4">
             <div class="col-md-4 offset-md-4 text-center">
-                <label for="test" class="form-label">Escolha uma prova (primeira fase):</label>
+                <label for="test" class="form-label">Escolha uma prova:</label>
                 <select id="test" class="form-select" onchange="confirmLoadTest()">
                     <option value="">--Selecione uma prova--</option>
-                    <option value="fuvest/fuvest2023">FUVEST 2023</option>
-                    <option value="fuvest/fuvest2024">FUVEST 2024</option>
+                    <option value="enem/enem2023dia1">ENEM 2023 - Dia 1</option>
+                    <option value="fuvest/fuvest2023">FUVEST 2023 (primeira fase)</option>
+                    <option value="fuvest/fuvest2024">FUVEST 2024 (primeira fase)</option>
+
                 </select>
             </div>
         </div>
@@ -138,8 +140,8 @@
     <!-- Footer com o link para o GitHub -->
     <footer class="footer mt-5">
         <div class="container text-center">
-            <p class="text-muted">Feito com carinho por <a href="https://github.com/lubianat"
-                    target="_blank">@lubianat</a></p>
+            <p class="text-muted">Livre e gratuito. Feito com carinho por <a href="https://github.com/lubianat"
+                    target="_blank">@lubianat</a>.</p>
         </div>
     </footer>
 

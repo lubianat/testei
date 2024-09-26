@@ -1,0 +1,388 @@
+{
+    "metadata": {
+        "source_for_test": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+        "source_for_score": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf"
+    },
+    "answers": {
+        "1 - Inglês": {
+            "answer": "B",
+            "order": 1
+        },
+        "2 - Inglês": {
+            "answer": "B",
+            "order": 2
+        },
+        "3 - Inglês": {
+            "answer": "D",
+            "order": 3
+        },
+        "4 - Inglês": {
+            "answer": "A",
+            "order": 4
+        },
+        "5 - Inglês": {
+            "answer": "B",
+            "order": 5
+        },
+        "1 - Espanhol": {
+            "answer": "A",
+            "order": 6
+        },
+        "2 - Espanhol": {
+            "answer": "A",
+            "order": 7
+        },
+        "3 - Espanhol": {
+            "answer": "E",
+            "order": 8
+        },
+        "4 - Espanhol": {
+            "answer": "B",
+            "order": 9
+        },
+        "5 - Espanhol": {
+            "answer": "A",
+            "order": 10
+        },
+        "6": {
+            "answer": "D",
+            "order": 11
+        },
+        "7": {
+            "answer": "A",
+            "order": 12
+        },
+        "8": {
+            "answer": "C",
+            "order": 13
+        },
+        "9": {
+            "answer": "E",
+            "order": 14
+        },
+        "10": {
+            "answer": "E",
+            "order": 15
+        },
+        "11": {
+            "answer": "D",
+            "order": 16
+        },
+        "12": {
+            "answer": "C",
+            "order": 17
+        },
+        "13": {
+            "answer": "C",
+            "order": 18
+        },
+        "14": {
+            "answer": "D",
+            "order": 19
+        },
+        "15": {
+            "answer": "B",
+            "order": 20
+        },
+        "16": {
+            "answer": "A",
+            "order": 21
+        },
+        "17": {
+            "answer": "D",
+            "order": 22
+        },
+        "18": {
+            "answer": "B",
+            "order": 23
+        },
+        "19": {
+            "answer": "D",
+            "order": 24
+        },
+        "20": {
+            "answer": "E",
+            "order": 25
+        },
+        "21": {
+            "answer": "D",
+            "order": 26
+        },
+        "22": {
+            "answer": "C",
+            "order": 27
+        },
+        "23": {
+            "answer": "C",
+            "order": 28
+        },
+        "24": {
+            "answer": "E",
+            "order": 29
+        },
+        "25": {
+            "answer": "B",
+            "order": 30
+        },
+        "26": {
+            "answer": "C",
+            "order": 31
+        },
+        "27": {
+            "answer": "A",
+            "order": 32
+        },
+        "28": {
+            "answer": "C",
+            "order": 33
+        },
+        "29": {
+            "answer": "E",
+            "order": 34
+        },
+        "30": {
+            "answer": "A",
+            "order": 35
+        },
+        "31": {
+            "answer": "C",
+            "order": 36
+        },
+        "32": {
+            "answer": "A",
+            "order": 37
+        },
+        "33": {
+            "answer": "A",
+            "order": 38
+        },
+        "34": {
+            "answer": "C",
+            "order": 39
+        },
+        "35": {
+            "answer": "A",
+            "order": 40
+        },
+        "36": {
+            "answer": "A",
+            "order": 41
+        },
+        "37": {
+            "answer": "C",
+            "order": 42
+        },
+        "38": {
+            "answer": "A",
+            "order": 43
+        },
+        "39": {
+            "answer": "C",
+            "order": 44
+        },
+        "40": {
+            "answer": "B",
+            "order": 45
+        },
+        "41": {
+            "answer": "B",
+            "order": 46
+        },
+        "42": {
+            "answer": "E",
+            "order": 47
+        },
+        "43": {
+            "answer": "A",
+            "order": 48
+        },
+        "44": {
+            "answer": "A",
+            "order": 49
+        },
+        "45": {
+            "answer": "E",
+            "order": 50
+        },
+        "46": {
+            "answer": "C",
+            "order": 51
+        },
+        "47": {
+            "answer": "D",
+            "order": 52
+        },
+        "48": {
+            "answer": "A",
+            "order": 53
+        },
+        "49": {
+            "answer": "E",
+            "order": 54
+        },
+        "50": {
+            "answer": "E",
+            "order": 55
+        },
+        "51": {
+            "answer": "C",
+            "order": 56
+        },
+        "52": {
+            "answer": "A",
+            "order": 57
+        },
+        "53": {
+            "answer": "B",
+            "order": 58
+        },
+        "54": {
+            "answer": "A",
+            "order": 59
+        },
+        "55": {
+            "answer": "A",
+            "order": 60
+        },
+        "56": {
+            "answer": "C",
+            "order": 61
+        },
+        "57": {
+            "answer": "E",
+            "order": 62
+        },
+        "58": {
+            "answer": "A",
+            "order": 63
+        },
+        "59": {
+            "answer": "A",
+            "order": 64
+        },
+        "60": {
+            "answer": "D",
+            "order": 65
+        },
+        "61": {
+            "answer": "E",
+            "order": 66
+        },
+        "62": {
+            "answer": "C",
+            "order": 67
+        },
+        "63": {
+            "answer": "B",
+            "order": 68
+        },
+        "64": {
+            "answer": "D",
+            "order": 69
+        },
+        "65": {
+            "answer": "A",
+            "order": 70
+        },
+        "66": {
+            "answer": "A",
+            "order": 71
+        },
+        "67": {
+            "answer": "B",
+            "order": 72
+        },
+        "68": {
+            "answer": "C",
+            "order": 73
+        },
+        "69": {
+            "answer": "D",
+            "order": 74
+        },
+        "70": {
+            "answer": "C",
+            "order": 75
+        },
+        "71": {
+            "answer": "A",
+            "order": 76
+        },
+        "72": {
+            "answer": "B",
+            "order": 77
+        },
+        "73": {
+            "answer": "A",
+            "order": 78
+        },
+        "74": {
+            "answer": "D",
+            "order": 79
+        },
+        "75": {
+            "answer": "C",
+            "order": 80
+        },
+        "76": {
+            "answer": "D",
+            "order": 81
+        },
+        "77": {
+            "answer": "E",
+            "order": 82
+        },
+        "78": {
+            "answer": "A",
+            "order": 83
+        },
+        "79": {
+            "answer": "B",
+            "order": 84
+        },
+        "80": {
+            "answer": "A",
+            "order": 85
+        },
+        "81": {
+            "answer": "A",
+            "order": 86
+        },
+        "82": {
+            "answer": "B",
+            "order": 87
+        },
+        "83": {
+            "answer": "C",
+            "order": 88
+        },
+        "84": {
+            "answer": "D",
+            "order": 89
+        },
+        "85": {
+            "answer": "D",
+            "order": 90
+        },
+        "86": {
+            "answer": "E",
+            "order": 91
+        },
+        "87": {
+            "answer": "B",
+            "order": 92
+        },
+        "88": {
+            "answer": "A",
+            "order": 93
+        },
+        "89": {
+            "answer": "D",
+            "order": 94
+        },
+        "90": {
+            "answer": "B",
+            "order": 95
+        }
+    }
+}
