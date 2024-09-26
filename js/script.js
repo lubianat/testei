@@ -86,8 +86,8 @@ function loadTest() {
         fetch(answerKey)
             .then(response => response.json())
             .then(data => {
-                window.correctAnswers = data;
-                generateScoreCard(data);
+                window.correctAnswers = data.answers; // Access the 'answers' object inside the JSON
+                generateScoreCard(data.answers); // Pass only the answers to generate the score card
             });
     }
 }
@@ -157,7 +157,6 @@ function calculateScore() {
     scoreOutput.innerHTML = `Seu resultado foi ${score}/${Object.keys(window.correctAnswers).length}`;
 }
 
-// Função para baixar o resultado em formato PDF usando jsPDF
 // Função para baixar o resultado em formato PDF usando jsPDF com AutoTable
 function downloadScore() {
     const { jsPDF } = window.jspdf;
@@ -195,3 +194,23 @@ function downloadScore() {
     doc.save('resultado_teste.pdf');
 }
 
+let isFormDirty = false; // Track if the form has been modified
+
+// Add event listeners to the radio buttons to detect user input
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('questions-form');
+
+    form.addEventListener('change', function () {
+        isFormDirty = true; // Set the form as dirty when the user makes any change
+    });
+
+    // Warn the user before they leave the page if there are unsaved changes
+    window.addEventListener('beforeunload', function (event) {
+        if (isFormDirty) {
+            // The confirmation dialog will only show if you assign a return value or preventDefault.
+            event.preventDefault();
+            event.returnValue = ''; // Some browsers require a return value, but it's ignored
+            return ''; // Return a string or empty string, which will trigger the alert
+        }
+    });
+});
