@@ -7,7 +7,7 @@ let isTimerBarVisible = false; // Track timer bar visibility
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 // Use relative paths for local development, and absolute paths for production
-const basePath = isLocal ? '' : 'https://tiago.bio.br/fuvest-taker/';
+const basePath = isLocal ? '' : 'https://tiago.bio.br/testei';
 
 // Função para iniciar/pausar o Timer
 function togglePlayPause() {
