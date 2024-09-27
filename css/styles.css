@@ -14,3 +14,8 @@
     margin-right: 10px;
     margin-left: 5px;
 }
+
+/* Ensure the original select element is hidden */
+select.selectized {
+    display: none !important;
+}

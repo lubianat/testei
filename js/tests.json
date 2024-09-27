@@ -1,0 +1,24 @@
+{
+    "tests": [
+        {
+            "label": "ENEM 2023 - Dia 1",
+            "value": "enem/enem2023dia1"
+        },
+        {
+            "label": "ENEM 2023 - Dia 2",
+            "value": "enem/enem2023dia2"
+        },
+        {
+            "label": "OBB 2024 - Fase 1",
+            "value": "olimpiadas/obb2024fase1"
+        },
+        {
+            "label": "FUVEST 2023 (primeira fase)",
+            "value": "fuvest/fuvest2023"
+        },
+        {
+            "label": "FUVEST 2024 (primeira fase)",
+            "value": "fuvest/fuvest2024"
+        }
+    ]
+}

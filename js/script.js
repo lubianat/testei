@@ -60,37 +60,38 @@ function toggleTimerBar() {
 
 
 // Função para confirmar a troca da prova apenas se houver respostas
-function confirmLoadTest() {
+// Função para confirmar a troca da prova apenas se houver respostas
+function confirmLoadTest(testValue) {
     const form = document.getElementById('questions-form');
     const answeredQuestions = Object.values(form).some(input => input.checked);
 
     if (answeredQuestions) {
         const confirmChange = confirm('Tem certeza que deseja carregar essa prova? Suas respostas atuais serão descartadas.');
         if (confirmChange) {
-            loadTest();
+            loadTest(testValue);
         }
     } else {
-        loadTest(); // Carrega a prova imediatamente se nenhuma resposta foi dada
+        loadTest(testValue); // Carrega a prova imediatamente se nenhuma resposta foi dada
     }
 }
 
-// Função para carregar o teste selecionado
-function loadTest() {
-    const testSelect = document.getElementById('test').value;
+// Função para carregar o teste selecionado (agora com valor de Selectize)
+function loadTest(testValue) {
     const pdfFrame = document.getElementById('pdf-frame');
-    const answerKey = `answers/${testSelect}.json`;
+    const answerKey = `answers/${testValue}.json`;
 
-    if (testSelect) {
-        pdfFrame.src = `pdfs/${testSelect}.pdf`;
+    if (testValue) {
+        pdfFrame.src = `pdfs/${testValue}.pdf`;
         // Carregar o gabarito e gerar dinamicamente as questões
         fetch(answerKey)
             .then(response => response.json())
             .then(data => {
-                window.correctAnswers = data.answers; // Access the 'answers' object inside the JSON
-                generateScoreCard(data.answers); // Pass only the answers to generate the score card
+                window.correctAnswers = data.answers;
+                generateScoreCard(data.answers);
             });
     }
 }
+
 // Helper function to get sorted entries from the answers object
 function getSortedEntries(answers) {
     // Detect if the answers have an 'order' field
@@ -289,6 +290,42 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
             event.returnValue = ''; // Some browsers require a return value, but it's ignored
             return ''; // Return a string or empty string, which will trigger the alert
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Choices.js on the select element
+    const testSelect = document.getElementById('test');
+
+    const choices = new Choices(testSelect, {
+        searchEnabled: true,
+        itemSelectText: '', // Remove the "Select" text on the dropdown
+        placeholderValue: '--Selecione uma prova--', // Placeholder text
+        shouldSort: false, // Keep the order of items as in JSON
+    });
+
+    // Load options dynamically from the external JSON file
+    fetch('js/tests.json')
+        .then(response => response.json())
+        .then(data => {
+            // Add options to the dropdown dynamically
+            const testOptions = data.tests.map(test => ({
+                value: test.value,
+                label: test.label
+            }));
+            choices.setChoices(testOptions, 'value', 'label', true);
+        })
+        .catch(error => {
+            console.error('Error loading test options:', error);
+        });
+
+    // Handle test selection
+    testSelect.addEventListener('change', function () {
+        const selectedValue = this.value;
+        if (selectedValue) {
+            confirmLoadTest(selectedValue); // Call your load test function
         }
     });
 });
