@@ -13,6 +13,10 @@
             "value": "olimpiadas/obb2024fase1"
         },
         {
+            "label": "FUVEST 2022 (primeira fase)",
+            "value": "fuvest/fuvest2022"
+        },
+        {
             "label": "FUVEST 2023 (primeira fase)",
             "value": "fuvest/fuvest2023"
         },

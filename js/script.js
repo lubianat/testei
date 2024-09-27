@@ -3,6 +3,12 @@ let totalSeconds = 0;
 let isPaused = true;
 let isTimerBarVisible = false; // Track timer bar visibility
 
+// Determine if the environment is local or production (NOTE: May break when moving to S3 or similar.   )
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// Use relative paths for local development, and absolute paths for production
+const basePath = isLocal ? '' : 'https://tiago.bio.br/fuvest-taker/';
+
 // Função para iniciar/pausar o Timer
 function togglePlayPause() {
     const playPauseIcon = document.getElementById("play-pause-icon");
@@ -81,7 +87,7 @@ function loadTest(testValue) {
     const answerKey = `answers/${testValue}.json`;
 
     if (testValue) {
-        pdfFrame.src = `pdfs/${testValue}.pdf`;
+        pdfFrame.src = `${basePath}/pdfs/${testValue}.pdf`;
         // Carregar o gabarito e gerar dinamicamente as questões
         fetch(answerKey)
             .then(response => response.json())
